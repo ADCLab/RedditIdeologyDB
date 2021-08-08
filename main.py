@@ -12,7 +12,7 @@ warnings.filterwarnings("ignore")
 if __name__ == "__main__":
 
     ##################################### params ##################################################
-    subreddit = 'Liberal' # Liberal, Conservative
+    subreddit = 'Conservative' # Liberal, Conservative
     url_type = 'submission' # submission, comment
 
     reddit = praw.Reddit(client_id='AuThlzMeoA8isW1Xn7cYqA', \
@@ -29,7 +29,8 @@ if __name__ == "__main__":
     print("lastPostTimestamp: {}".format(lastPostTimestamp))
 
     ##################################### Get ids ##################################################
-    ids_df = get_ids(api=api, subreddit=subreddit, start_epoch=1628040381, end_epoch=1628393657)
+    ids_df = get_ids(api=api, subreddit=subreddit, url_type=url_type, start_epoch=1628040381, end_epoch=lastPostTimestamp)
+    # print(ids_df)
     ids_df.to_csv(r'.\..\ids_'+ subreddit+ '_'+ url_type+ '.csv', index=False)
 
     ##################################### Get url ##################################################
