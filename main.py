@@ -26,27 +26,29 @@ if __name__ == "__main__":
 
     api = PushshiftAPI(reddit)
 
-    firstPostTimestamp = get_timestamp(subreddit=subreddit, post="first")
+    firstPostTimestamp = 1306900799
+    # firstPostTimestamp = get_timestamp(subreddit=subreddit, post="first")
     # lastPostTimestamp = get_timestamp(subreddit=subreddit, post="last")
-    lastPostTimestamp = 1628308799 #8/6/2021, 11:59:59 PM
+    lastPostTimestamp = 1312171199 # 1628308799 #8/6/2021, 11:59:59 PM
     print("firstPostTimestamp: {}".format(firstPostTimestamp))
     print("lastPostTimestamp: {}".format(lastPostTimestamp))
+    timestamp="_from"+str(firstPostTimestamp)+"to"+str(lastPostTimestamp)
 
     ##################################### Get ids ##################################################
     ids_df = get_ids(api=api, subreddit=subreddit, url_type=url_type, start_epoch=firstPostTimestamp, end_epoch=lastPostTimestamp)
-    ids_df.to_csv(r'.\..\ids_'+ subreddit+ '_'+ url_type+ '.csv', index=False)
+    ids_df.to_csv(r'.\..\ids_'+ subreddit+ '_'+ url_type+ timestamp+ '.csv', index=False)
 
     ids_time = time.time()
     print("---ids time %s seconds ---" % (ids_time - start_time))
 
     ##################################### Get url ##################################################
-    ids = pd.read_csv(r'.\..\ids_'+ subreddit+ '_'+ url_type+  '.csv')
+    ids = pd.read_csv(r'.\..\ids_'+ subreddit+ '_'+ url_type+ timestamp+ '.csv')
     urls = get_url_list(ids=list(ids["ids"]), reddit=reddit)
     urls_df = pd.DataFrame(urls, columns = ["urls"])
-    urls_df.to_csv(r'.\..\urls_' + subreddit+ '_'+ url_type+ '.csv', index=False)
+    urls_df.to_csv(r'.\..\urls_' + subreddit+ '_'+ url_type+ timestamp+ '.csv', index=False)
 
     ids_urls_df = pd.concat([ids, urls_df], axis=1)
-    ids_urls_df.to_csv(r'.\..\ids_urls_'+ subreddit+ '_'+ url_type+  '.csv', index=False)
+    ids_urls_df.to_csv(r'.\..\ids_urls_'+ subreddit+ '_'+ url_type+ timestamp+ '.csv', index=False)
 
     url_time = time.time()
     print("---url time %s seconds ---" % (url_time - ids_time))
