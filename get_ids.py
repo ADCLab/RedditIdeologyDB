@@ -12,7 +12,8 @@ def get_ids(api, subreddit, url_type, start_epoch, end_epoch):
                                                         subreddit=subreddit,
                                                         filter=['id']))
 
-    results_df = pd.DataFrame(results, columns = ["ids"])
+    # print(results)
+    # results_df = pd.DataFrame(results, columns = ["ids"])
     # print(results_df)
     
-    return results_df
+    return results
