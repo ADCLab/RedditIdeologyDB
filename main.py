@@ -4,6 +4,7 @@ from psaw import PushshiftAPI
 from get_ids import get_ids
 from get_url_list import get_url_list
 import pandas as pd
+import time
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -11,8 +12,10 @@ warnings.filterwarnings("ignore")
 # main
 if __name__ == "__main__":
 
+    start_time = time.time()
+
     ##################################### params ##################################################
-    subreddit = 'Conservative' # Liberal, Conservative
+    subreddit = 'Liberal' # Liberal, Conservative
     url_type = 'submission' # submission, comment
 
     reddit = praw.Reddit(client_id='AuThlzMeoA8isW1Xn7cYqA', \
@@ -24,14 +27,17 @@ if __name__ == "__main__":
     api = PushshiftAPI(reddit)
 
     firstPostTimestamp = get_timestamp(subreddit=subreddit, post="first")
-    lastPostTimestamp = get_timestamp(subreddit=subreddit, post="last")
+    # lastPostTimestamp = get_timestamp(subreddit=subreddit, post="last")
+    lastPostTimestamp = 1628308799 #8/6/2021, 11:59:59 PM
     print("firstPostTimestamp: {}".format(firstPostTimestamp))
     print("lastPostTimestamp: {}".format(lastPostTimestamp))
 
     ##################################### Get ids ##################################################
-    ids_df = get_ids(api=api, subreddit=subreddit, url_type=url_type, start_epoch=1628040381, end_epoch=lastPostTimestamp)
-    # print(ids_df)
+    ids_df = get_ids(api=api, subreddit=subreddit, url_type=url_type, start_epoch=firstPostTimestamp, end_epoch=lastPostTimestamp)
     ids_df.to_csv(r'.\..\ids_'+ subreddit+ '_'+ url_type+ '.csv', index=False)
+
+    ids_time = time.time()
+    print("---ids time %s seconds ---" % (ids_time - start_time))
 
     ##################################### Get url ##################################################
     ids = pd.read_csv(r'.\..\ids_'+ subreddit+ '_'+ url_type+  '.csv')
@@ -42,6 +48,8 @@ if __name__ == "__main__":
     ids_urls_df = pd.concat([ids, urls_df], axis=1)
     ids_urls_df.to_csv(r'.\..\ids_urls_'+ subreddit+ '_'+ url_type+  '.csv', index=False)
 
+    url_time = time.time()
+    print("---url time %s seconds ---" % (url_time - ids_time))
     ################################### Get news articles ###########################################
 
 
