@@ -18,7 +18,7 @@ if __name__ == "__main__":
     start_clock = time.time()
 
     ##################################### params ##################################################
-    subreddit = 'Liberal' # Liberal, Conservative
+    subreddit = 'Conservative' # Liberal, Conservative
     url_type = 'submission' # submission, comment
 
     reddit = praw.Reddit(client_id='AuThlzMeoA8isW1Xn7cYqA', \
@@ -39,60 +39,76 @@ if __name__ == "__main__":
     timestamp="_from"+str(firstPostTimestamp)+"to"+str(lastPostTimestamp)
 
     ##################################### Get ids ##################################################
-    # ids_clock_st = time.time()
+    ids_clock_st = time.time()
 
-    # ids_dir = ".\..\ids_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
-    # if isdir(ids_dir) is not True:
-    #     os.makedirs(ids_dir)
+    ids_dir = ".\..\ids_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+    if isdir(ids_dir) is not True:
+        os.makedirs(ids_dir)
 
-    # # stop 1
-    # # ids_Liberal_submission_from1422733243to1425325243
-    # # stop 2
-    # # ids_Liberal_submission_from1446061252to1448653252
-    # # stop 3
-    # # ids_Liberal_submission_from1474573263to1477165263
-    # # stop 4
-    # # ids_Liberal_submission_from1513453278to1516045278
-    # # stop 5
-    # # 
+    # stop 1
+    # ids_Conservative_submission_from1251402661to1253994661
+    # stop 2
+    # ids_Conservative_submission_from1290282676to1292874676
+    # stop 3
+    # ids_Conservative_submission_from1303242681to1305834681
+    # stop 4
+    # ids_Conservative_submission_from1318794687to1321386687
+    # stop 5
+    # ids_Conservative_submission_from1321386688to1323978688
+    # stop 6
+    # ids_Conservative_submission_from1331754692to1334346692
+    # stop 7
+    # ids_Conservative_submission_from1336938694to1339530694
+    # stop 8
+    # ids_Conservative_submission_from1342122696to1344714696
+    # stop 9
+    # ids_Conservative_submission_from1347306698to1349898698
+    # stop 10
+    # ids_Conservative_submission_from1386186713to1388778713
+    # stop 11
+    # ids_Conservative_submission_from1388778714to1391370714
+    # stop 12
+    # ids_Conservative_submission_from1392234716to1393098716
+    # stop 13
+    # 
 
-    # time_delta = 30*24*60*60 # 30 day
-    # start_time = 1516045278 + 1 # firstPostTimestamp 
-    # end_time = start_time + time_delta
-    # ids_list = []
-    # day = 1
-    # while start_time < lastPostTimestamp:
-    #     # time.sleep(1) # 1 sec
-    #     print('day',day*30, start_time, end_time)
-    #     day+=1
-    #     id_lst = get_ids(api=api, subreddit=subreddit, url_type=url_type, start_epoch=start_time, end_epoch=end_time)
+    time_delta = 10*24*60*60 # 10 day
+    start_time = 1627242987 + 1 # firstPostTimestamp or the timestamp where it stooped/frozen.
+    end_time = start_time + time_delta
+    ids_list = []
+    day = 1
+    while start_time < lastPostTimestamp:
+        # time.sleep(1) # 1 sec
+        print('day',day*10, start_time, end_time)
+        day+=1
+        id_lst = get_ids(api=api, subreddit=subreddit, url_type=url_type, start_epoch=start_time, end_epoch=end_time)
         
-    #     print(len(id_lst))
-    #     ids_list+=id_lst
+        print(len(id_lst))
+        ids_list+=id_lst
 
-    #     id_lst_df = pd.DataFrame(id_lst, columns = ["ids"])
-    #     timeINTERVALstamp_="_from"+str(start_time)+"to"+str(end_time)
-    #     id_lst_df.to_csv(ids_dir+ '\ids_'+ subreddit+ '_'+ url_type+ timeINTERVALstamp_+ '.csv', index=False)
+        id_lst_df = pd.DataFrame(id_lst, columns = ["ids"])
+        timeINTERVALstamp_="_from"+str(start_time)+"to"+str(end_time)
+        id_lst_df.to_csv(ids_dir+ '\ids_'+ subreddit+ '_'+ url_type+ timeINTERVALstamp_+ '.csv', index=False)
 
-    #     start_time = end_time + 1
-    #     end_time = start_time + time_delta
-    #     if end_time > lastPostTimestamp:
-    #         end_time = lastPostTimestamp
+        start_time = end_time + 1
+        end_time = start_time + time_delta
+        if end_time > lastPostTimestamp:
+            end_time = lastPostTimestamp
         
-    # ids_clock_en = time.time()
-    # print("---ids time %s seconds ---" % (ids_clock_en - ids_clock_st))
+    ids_clock_en = time.time()
+    print("---ids time %s seconds ---" % (ids_clock_en - ids_clock_st))
 
     ############################### aggregate the ids ############################################
 
-    ids_dir = ".\..\ids_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+    # ids_dir = ".\..\ids_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
 
-    id_files = glob.glob(ids_dir+"\*.csv")
-    ids_list = []
-    for id_file in id_files:
-        ids_list+= list(pd.read_csv(id_file)["ids"])
+    # id_files = glob.glob(ids_dir+"\*.csv")
+    # ids_list = []
+    # for id_file in id_files:
+    #     ids_list+= list(pd.read_csv(id_file)["ids"])
 
-    ids_list_df = pd.DataFrame(ids_list, columns = ["ids"])    
-    ids_list_df.to_csv(ids_dir+ '.csv', index=False)
+    # ids_list_df = pd.DataFrame(ids_list, columns = ["ids"])    
+    # ids_list_df.to_csv(ids_dir+ '.csv', index=False)
 
     ##################################### Get url ##################################################
     # ids = pd.read_csv(r'.\..\ids_'+ subreddit+ '_'+ url_type+ timestamp+ '.csv')
