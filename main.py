@@ -8,6 +8,7 @@ import pandas as pd
 import time
 import os
 import glob
+from get_article_text import get_text, get_texts
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -15,7 +16,7 @@ warnings.filterwarnings("ignore")
 # main
 if __name__ == "__main__":
 
-    start_clock = time.time()
+    # start_clock = time.time()
 
     ##################################### params ##################################################
     subreddit = 'Conservative' # Liberal, Conservative
@@ -32,8 +33,7 @@ if __name__ == "__main__":
     ################################## Get timestamp ###############################################
     firstPostTimestamp = get_timestamp(subreddit=subreddit, post="first")
     # lastPostTimestamp = get_timestamp(subreddit=subreddit, post="last")
-    # firstPostTimestamp = 1306900799
-    lastPostTimestamp = 1628308799 # 1628308799 #8/6/2021, 11:59:59 PM
+    lastPostTimestamp = 1628308799 # 1628308799 #8/6/2021, 11:59:59 PM >>> IT IS FIXED, DOM'T CHANGE
     print("firstPostTimestamp: {}".format(firstPostTimestamp))
     print("lastPostTimestamp: {}".format(lastPostTimestamp))
     timestamp="_from"+str(firstPostTimestamp)+"to"+str(lastPostTimestamp)
@@ -111,18 +111,41 @@ if __name__ == "__main__":
     # ids_list_df.to_csv(ids_dir+ '.csv', index=False)
 
     ##################################### Get url ##################################################
-    url_clock_st = time.time()
+    # url_clock_st = time.time()
 
-    ids_dir = ".\..\ids_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+    # ids_dir = ".\..\ids_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
 
-    ids = pd.read_csv(ids_dir+ '.csv')
-    urls = get_url_list(ids=list(ids["ids"]), reddit=reddit)
-    urls_df = pd.DataFrame(urls, columns = ["urls"])
+    # ids = pd.read_csv(ids_dir+ '.csv')
+    # urls = get_url_list(ids=list(ids["ids"]), reddit=reddit)
+    # urls_df = pd.DataFrame(urls, columns = ["urls"])
 
-    ids_urls_df = pd.concat([ids, urls_df], axis=1)
-    ids_urls_dir = ".\..\ids_urls_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
-    ids_urls_df.to_csv(ids_urls_dir+ '.csv', index=False)
+    # ids_urls_df = pd.concat([ids, urls_df], axis=1)
+    # ids_urls_dir = ".\..\ids_urls_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+    # ids_urls_df.to_csv(ids_urls_dir+ '.csv', index=False)
 
-    url_clock_en = time.time()
-    print("---url time %s seconds ---" % (url_clock_en - url_clock_st))
+    # url_clock_en = time.time()
+    # print("---url time %s seconds ---" % (url_clock_en - url_clock_st))
+
     ################################### Get news articles ###########################################
+
+    article_clock_st = time.time()
+
+    ids_urls_dir = ".\..\ids_urls_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+    ids_urls_dir_df = pd.read_csv(ids_urls_dir+ '.csv')
+
+    # url = "https://www.alternet.org/2021/08/oan-lawsuit/"
+    # url = "http://www.alternet.org/newsandviews/article/462845/bigoted_religious_right_group_compares_homosexuality_to_second-hand_smoke/"
+    # url = "http://www.nytimes.com/2011/03/19/business/economy/19nocera.html?ref=business"
+    # url = 'http://fox13now.com/2013/12/30/new-year-new-laws-obamacare-pot-guns-and-drones/'
+
+    # url_text =  get_text(url=url)
+
+    urls_texts = get_texts(urls_list=list(ids_urls_dir_df["urls"]))
+    urls_texts_df = pd.DataFrame(urls_texts, columns = ["article"])
+
+    ids_urls_text_df = pd.concat([ids_urls_dir_df, urls_texts_df], axis=1)
+    ids_urls_text_dir = ".\..\ids_urls_articles_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+    ids_urls_text_df.to_csv(ids_urls_text_dir+ '.csv', index=False)
+
+    article_clock_en = time.time()
+    print("---article time %s seconds ---" % (article_clock_en - article_clock_st))
