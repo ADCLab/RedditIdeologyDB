@@ -180,6 +180,10 @@ If you use significant portions of our code in your research, please cite our wo
   howpublished = {\url{https://github.com/kamalravi/scrape_reddit}},
 }
 ```
+or
+```
+Ravi, Kamalakkannan, and Adan, Vela. "Scrape Reddit." https://github.com/kamalravi/scrape_reddit. (2021).
+```
 
 Questions or Comments
 ------
