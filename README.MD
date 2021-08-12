@@ -172,7 +172,7 @@ Citation
 If you use significant portions of our code in your research, please cite our work:
 ```
 @misc{ravi2021scrape_reddit,
-  author=Ravi, Kamalakkannan},
+  author={Ravi, Kamalakkannan and Vela, Adan},
   title = {Scrape Reddit},
   year = {2021},
   publisher = {GitHub},
