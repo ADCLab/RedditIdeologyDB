@@ -8,7 +8,7 @@ import pandas as pd
 import time
 import os
 import glob
-from get_article_text import get_text, get_texts
+from get_article_text import *
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -133,19 +133,31 @@ if __name__ == "__main__":
     ids_urls_dir = ".\..\ids_urls_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
     ids_urls_dir_df = pd.read_csv(ids_urls_dir+ '.csv')
 
-    # url = "https://www.alternet.org/2021/08/oan-lawsuit/"
-    # url = "http://www.alternet.org/newsandviews/article/462845/bigoted_religious_right_group_compares_homosexuality_to_second-hand_smoke/"
-    # url = "http://www.nytimes.com/2011/03/19/business/economy/19nocera.html?ref=business"
-    # url = 'http://fox13now.com/2013/12/30/new-year-new-laws-obamacare-pot-guns-and-drones/'
+    # url ="http://www.usatoday.com/news/politics/election2008/2008-09-20-Poll-Obama_N.htm?loc=interstitialskip"
 
-    # url_text =  get_text(url=url)
+    # url_text =  get_newspaper_text(url=url)
+    # print(url_text)
 
-    urls_texts = get_texts(urls_list=list(ids_urls_dir_df["urls"]))
-    urls_texts_df = pd.DataFrame(urls_texts, columns = ["article"])
+    # ids_urls_texts = get_newspaper_texts(ids_urls_list=ids_urls_dir_df.values.tolist())
+    # print(len(ids_urls_texts))
+    
+    # ids_urls_text_df = pd.DataFrame(ids_urls_texts, columns = ["ids", "urls", "articles"])
+    # ids_urls_text_dir = ".\..\ids_urls_articles_newsp_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+    # ids_urls_text_df.to_csv(ids_urls_text_dir+ '.csv', index=False)
 
-    ids_urls_text_df = pd.concat([ids_urls_dir_df, urls_texts_df], axis=1)
-    ids_urls_text_dir = ".\..\ids_urls_articles_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+    print("==== bsoup scrapes more articles than newspaper ====")
+
+    # url_BSoup_text =  get_BSoup_text(url=url)
+    # print(url_BSoup_text)
+    
+    ids_urls_texts = get_BSoup_texts(ids_urls_list=ids_urls_dir_df.values.tolist())
+    print(len(ids_urls_texts))
+    
+    ids_urls_text_df = pd.DataFrame(ids_urls_texts, columns = ["ids", "urls", "articles"])
+    ids_urls_text_dir = ".\..\ids_urls_articles_bsoup_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
     ids_urls_text_df.to_csv(ids_urls_text_dir+ '.csv', index=False)
 
     article_clock_en = time.time()
     print("---article time %s seconds ---" % (article_clock_en - article_clock_st))
+
+################################### END ###########################################
