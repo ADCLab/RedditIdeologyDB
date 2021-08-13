@@ -6,13 +6,14 @@ To scrape the news and external articles posted in the submissions of a subreddi
 We scrape
 --------
 
-- submission id
-- submission timestamp
-- URL in the submission
-- number of upvotes for the submission
-- user id of the submission
-- user flair of the submission
-- article of the URL in the submission
+- submission id (id)
+- submission timestamp (created_utc)
+- URL in the submission (url)
+- number of upvotes for the submission (num_upvotes)
+- number of comments on the submission (num_comments)
+- user id of the submission (author)
+- user flair of the submission (flair)
+- article of the URL in the submission (article)
 
 Getting Started
 ---------
