@@ -35,8 +35,8 @@ def get_newspaper_texts(ids_urls_list):
             for chunk in chunks:
                 thearticles_list.append([id, url, chunk, id_url[2], id_url[3], id_url[4], id_url[5], id_url[6]])
 
-        if count==100:
-            break
+        # if count==100:
+        #     break
 
     # print(len(thearticles_list))
     # print(thearticles_list)
@@ -92,8 +92,8 @@ def get_BSoup_texts(ids_urls_list):
             for chunk in chunks:
                 thearticles_list.append([id, url, chunk, id_url[2], id_url[3], id_url[4], id_url[5], id_url[6]])
 
-        if count==100:
-            break
+        # if count==100:
+        #     break
 
     # print(len(thearticles_list))
     # print(thearticles_list)
