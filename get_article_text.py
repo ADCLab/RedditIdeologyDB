@@ -23,17 +23,17 @@ def get_newspaper_texts(ids_urls_list):
     # Empty lists for content
     thearticles_list = []
     for count, id_url in enumerate(ids_urls_list):  
-        # print(count, "/", len(ids_urls_list))
+        print(count, "/", len(ids_urls_list))
         id = id_url[0]
         url = id_url[1]
         paragraphtext = get_newspaper_text(url)
         if len(paragraphtext)<32766:
-            thearticles_list.append([id, url, paragraphtext])
+            thearticles_list.append([id, url, paragraphtext, id_url[2], id_url[3], id_url[4], id_url[5], id_url[6]])
         else:
             nn = 32000 # csv cell limit
             chunks = [paragraphtext[ii:ii+nn] for ii in range(0, len(paragraphtext), nn)]
             for chunk in chunks:
-                thearticles_list.append([id, url, chunk])
+                thearticles_list.append([id, url, chunk, id_url[2], id_url[3], id_url[4], id_url[5], id_url[6]])
 
         if count==100:
             break
@@ -85,12 +85,12 @@ def get_BSoup_texts(ids_urls_list):
         url = id_url[1]
         paragraphtext = get_BSoup_text(url)
         if len(paragraphtext)<32766:
-            thearticles_list.append([id, url, paragraphtext])
+            thearticles_list.append([id, url, paragraphtext, id_url[2], id_url[3], id_url[4], id_url[5], id_url[6]])
         else:
             nn = 32000 # csv cell limit
             chunks = [paragraphtext[ii:ii+nn] for ii in range(0, len(paragraphtext), nn)]
             for chunk in chunks:
-                thearticles_list.append([id, url, chunk])
+                thearticles_list.append([id, url, chunk, id_url[2], id_url[3], id_url[4], id_url[5], id_url[6]])
 
         if count==100:
             break

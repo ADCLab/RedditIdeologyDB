@@ -19,7 +19,7 @@ if __name__ == "__main__":
     # start_clock = time.time()
 
     ##################################### params ##################################################
-    subreddit = 'Conservative' # Liberal, Conservative
+    subreddit = 'Liberal' # Liberal, Conservative
     url_type = 'submission' # submission, comment
 
     reddit = praw.Reddit(client_id='AuThlzMeoA8isW1Xn7cYqA', \
@@ -111,63 +111,64 @@ if __name__ == "__main__":
     # ids_list_df.to_csv(ids_dir+ '.csv', index=False)
 
     ##################################### Get url ##################################################
-    url_clock_st = time.time()
-
-    ids_dir = ".\..\ids_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
-
-    ids = pd.read_csv(ids_dir+ '.csv')
-    urls = get_url_list(ids=list(ids["ids"]), reddit=reddit)
-    urls_df = pd.DataFrame(urls, columns = ["url", "created_utc", "author", "num_upvotes", "num_comments", "flair"])
-
-    ids_urls_df = pd.concat([ids, urls_df], axis=1)
-    ids_urls_dir = ".\..\ids_urls_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
-    ids_urls_df.to_csv(ids_urls_dir+ '.csv', index=False)
-
-    url_clock_en = time.time()
-    print("---url time %s seconds ---" % (url_clock_en - url_clock_st))
-
-    ################################### reddit.info(ids2) or get_url_list has a limit of 577283 (0--to-577282). 
-    ################################### so remaining 105 are collected below and then added to the above list
-
     # url_clock_st = time.time()
 
     # ids_dir = ".\..\ids_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
 
     # ids = pd.read_csv(ids_dir+ '.csv')
-    # urls = get_url_list(ids=list(ids["ids"])[577283:], reddit=reddit)
+    # urls = get_url_list(ids=list(ids["ids"]), reddit=reddit)
     # urls_df = pd.DataFrame(urls, columns = ["url", "created_utc", "author", "num_upvotes", "num_comments", "flair"])
 
-    # ids_urls_df = pd.concat([ids.iloc[577282:], urls_df], axis=1)
-    # ids_urls_dir = ".\..\ids_urls__remain_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+    # ids_urls_df = pd.concat([ids, urls_df], axis=1)
+    # ids_urls_dir = ".\..\ids_urls_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
     # ids_urls_df.to_csv(ids_urls_dir+ '.csv', index=False)
 
     # url_clock_en = time.time()
     # print("---url time %s seconds ---" % (url_clock_en - url_clock_st))
 
+    # ################################### reddit.info(ids2) or get_url_list has a limit of 577283 (0--to-577282). 
+    # ################################### so remaining 105 are collected below and then added to the above list
+
+    # # url_clock_st = time.time()
+
+    # # ids_dir = ".\..\ids_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+
+    # # ids = pd.read_csv(ids_dir+ '.csv')
+    # # urls = get_url_list(ids=list(ids["ids"])[577283:], reddit=reddit)
+    # # urls_df = pd.DataFrame(urls, columns = ["url", "created_utc", "author", "num_upvotes", "num_comments", "flair"])
+
+    # # ids_urls_df = pd.concat([ids.iloc[577282:], urls_df], axis=1)
+    # # ids_urls_dir = ".\..\ids_urls__remain_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+    # # ids_urls_df.to_csv(ids_urls_dir+ '.csv', index=False)
+
+    # # url_clock_en = time.time()
+    # # print("---url time %s seconds ---" % (url_clock_en - url_clock_st))
+
     ################################### Get news articles ###########################################
 
-    # article_clock_st = time.time()
+    article_clock_st = time.time()
 
-    # ids_urls_dir = ".\..\ids_urls_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
-    # ids_urls_dir_df = pd.read_csv(ids_urls_dir+ '.csv')
+    ids_urls_dir = ".\..\ids_urls_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+    ids_urls_dir_df = pd.read_csv(ids_urls_dir+ '.csv')
 
-    # # # url ="http://www.usatoday.com/news/politics/election2008/2008-09-20-Poll-Obama_N.htm?loc=interstitialskip"
-    # # # url_text =  get_newspaper_text(url=url)
-    # # # print(url_text)
-    # # # url_BSoup_text =  get_BSoup_text(url=url)
-    # # # print(url_BSoup_text)
+    # # url ="http://www.usatoday.com/news/politics/election2008/2008-09-20-Poll-Obama_N.htm?loc=interstitialskip"
+    # # url_text =  get_newspaper_text(url=url)
+    # # print(url_text)
+    # # url_BSoup_text =  get_BSoup_text(url=url)
+    # # print(url_BSoup_text)
 
-    # print("==== bsoup scrapes more articles than newspaper ====")
+    print("==== bsoup scrapes more articles than newspaper ====")
     
-    # # ids_urls_texts = get_newspaper_texts(ids_urls_list=ids_urls_dir_df.values.tolist())
+    ids_urls_texts = get_newspaper_texts(ids_urls_list=ids_urls_dir_df.values.tolist())
     # ids_urls_texts = get_BSoup_texts(ids_urls_list=ids_urls_dir_df.values.tolist())
-    # print(len(ids_urls_texts))
+    print(len(ids_urls_texts))
     
-    # ids_urls_text_df = pd.DataFrame(ids_urls_texts, columns = ["ids", "urls", "articles"])
+    ids_urls_text_df = pd.DataFrame(ids_urls_texts, columns = ["ids", "urls", "articles", "created_utc", "author", "num_upvotes", "num_comments", "flair"])
+    ids_urls_text_dir = ".\..\ids_urls_articles_newsp_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
     # ids_urls_text_dir = ".\..\ids_urls_articles_bsoup_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
-    # ids_urls_text_df.to_csv(ids_urls_text_dir+ '.csv', index=False)
+    ids_urls_text_df.to_csv(ids_urls_text_dir+ '.csv', index=False)
 
-    # article_clock_en = time.time()
-    # print("---article time %s seconds ---" % (article_clock_en - article_clock_st))
+    article_clock_en = time.time()
+    print("---article time %s seconds ---" % (article_clock_en - article_clock_st))
 
     ################################### END ###########################################
