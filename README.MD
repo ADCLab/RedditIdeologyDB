@@ -185,6 +185,12 @@ or
 Ravi, Kamalakkannan, and Adan, Vela. "Scrape Reddit." https://github.com/kamalravi/scrape_reddit. (2021).
 ```
 
+Acknowledgement
+------
+
+Inspired by [PRAW Reddit API](https://praw.readthedocs.io/) and [Pushshift Reddit API](https://reddit-api.readthedocs.io/).
+
+
 Questions or Comments
 ------
 
