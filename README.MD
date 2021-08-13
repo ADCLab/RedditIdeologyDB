@@ -17,6 +17,8 @@ We scrape
 Getting Started
 ---------
 
+In the ```main.py```
+
 Parameters:
 ---------
 
