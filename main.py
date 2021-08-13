@@ -111,16 +111,34 @@ if __name__ == "__main__":
     # ids_list_df.to_csv(ids_dir+ '.csv', index=False)
 
     ##################################### Get url ##################################################
+    url_clock_st = time.time()
+
+    ids_dir = ".\..\ids_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+
+    ids = pd.read_csv(ids_dir+ '.csv')
+    urls = get_url_list(ids=list(ids["ids"]), reddit=reddit)
+    urls_df = pd.DataFrame(urls, columns = ["url", "created_utc", "author", "num_upvotes", "num_comments", "flair"])
+
+    ids_urls_df = pd.concat([ids, urls_df], axis=1)
+    ids_urls_dir = ".\..\ids_urls_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+    ids_urls_df.to_csv(ids_urls_dir+ '.csv', index=False)
+
+    url_clock_en = time.time()
+    print("---url time %s seconds ---" % (url_clock_en - url_clock_st))
+
+    ################################### reddit.info(ids2) or get_url_list has a limit of 577283 (0--to-577282). 
+    ################################### so remaining 105 are collected below and then added to the above list
+
     # url_clock_st = time.time()
 
     # ids_dir = ".\..\ids_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
 
     # ids = pd.read_csv(ids_dir+ '.csv')
-    # urls = get_url_list(ids=list(ids["ids"]), reddit=reddit)
-    # urls_df = pd.DataFrame(urls, columns = ["urls"])
+    # urls = get_url_list(ids=list(ids["ids"])[577283:], reddit=reddit)
+    # urls_df = pd.DataFrame(urls, columns = ["url", "created_utc", "author", "num_upvotes", "num_comments", "flair"])
 
-    # ids_urls_df = pd.concat([ids, urls_df], axis=1)
-    # ids_urls_dir = ".\..\ids_urls_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+    # ids_urls_df = pd.concat([ids.iloc[577282:], urls_df], axis=1)
+    # ids_urls_dir = ".\..\ids_urls__remain_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
     # ids_urls_df.to_csv(ids_urls_dir+ '.csv', index=False)
 
     # url_clock_en = time.time()
