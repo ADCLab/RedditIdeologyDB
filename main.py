@@ -19,7 +19,7 @@ if __name__ == "__main__":
     # start_clock = time.time()
 
     ##################################### params ##################################################
-    subreddit = 'Conservative' # Liberal, Conservative
+    subreddit = 'Liberal' # Liberal, Conservative
     url_type = 'submission' # submission, comment
 
     reddit = praw.Reddit(client_id='AuThlzMeoA8isW1Xn7cYqA', \
@@ -155,20 +155,19 @@ if __name__ == "__main__":
     # # url_text =  get_newspaper_text(url=url)
     # # print(url_text)
     # # url_BSoup_text =  get_BSoup_text(url=url)
-    # # print(url_BSoup_text)
+    # # print(url_BSoup_text)SS
 
     print("==== bsoup scrapes more articles than newspaper ====")
     
+    # ids_urls_text_df = pd.DataFrame(ids_urls_texts, columns = ["ids", "urls", "articles", "created_utc", "author", "num_upvotes", "num_comments", "flair"])
+
+    # ids_urls_text_dir = ".\..\ids_urls_articles_newsp_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+    ids_urls_text_dir = ".\..\ids_urls_articles_bsoup_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+    # ids_urls_text_df.to_csv(ids_urls_text_dir+ '.csv', index=False)
+
     # ids_urls_texts = get_newspaper_texts(ids_urls_list=ids_urls_dir_df.values.tolist())
-    ids_urls_texts = get_BSoup_texts(ids_urls_list=ids_urls_dir_df.values.tolist())
-    print(len(ids_urls_texts))
-    
-    ids_urls_text_df = pd.DataFrame(ids_urls_texts, columns = ["ids", "urls", "articles", "created_utc", "author", "num_upvotes", "num_comments", "flair"])
-    ids_urls_text_dir = ".\..\ids_urls_articles_newsp_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
-    # ids_urls_text_dir = ".\..\ids_urls_articles_bsoup_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
-    ids_urls_text_df.to_csv(ids_urls_text_dir+ '.csv', index=False)
+    get_BSoup_texts(ids_urls_dir_df=ids_urls_dir_df, ids_urls_text_dir=ids_urls_text_dir)
 
     article_clock_en = time.time()
     print("---article time %s seconds ---" % (article_clock_en - article_clock_st))
-
     ################################### END ###########################################
