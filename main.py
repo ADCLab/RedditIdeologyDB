@@ -19,7 +19,7 @@ if __name__ == "__main__":
     # start_clock = time.time()
 
     ##################################### params ##################################################
-    subreddit = 'Liberal' # Liberal, Conservative
+    subreddit = 'Conservative' # Liberal, Conservative
     url_type = 'submission' # submission, comment
 
     reddit = praw.Reddit(client_id='AuThlzMeoA8isW1Xn7cYqA', \
@@ -159,8 +159,8 @@ if __name__ == "__main__":
 
     print("==== bsoup scrapes more articles than newspaper ====")
     
-    ids_urls_texts = get_newspaper_texts(ids_urls_list=ids_urls_dir_df.values.tolist())
-    # ids_urls_texts = get_BSoup_texts(ids_urls_list=ids_urls_dir_df.values.tolist())
+    # ids_urls_texts = get_newspaper_texts(ids_urls_list=ids_urls_dir_df.values.tolist())
+    ids_urls_texts = get_BSoup_texts(ids_urls_list=ids_urls_dir_df.values.tolist())
     print(len(ids_urls_texts))
     
     ids_urls_text_df = pd.DataFrame(ids_urls_texts, columns = ["ids", "urls", "articles", "created_utc", "author", "num_upvotes", "num_comments", "flair"])
