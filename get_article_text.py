@@ -46,13 +46,14 @@ def get_newspaper_texts(ids_urls_list):
     return thearticles_list
 
 
+# >>>>>>>>>>>>
 def get_BSoup_text(url):
     url = url.strip()
     # store the text for each article
     paragraphtext = []    
     try: 
         # get page text
-        page = requests.get(url)
+        page = requests.get(url, timeout=1)
         # parse with BFS
         soup = BeautifulSoup(page.text, 'html.parser')    
         # get text
@@ -66,7 +67,12 @@ def get_BSoup_text(url):
             text = " ".join(text.split())
             # print((text))
             paragraphtext.append(text)  
-    except:
+    except (requests.exceptions.Timeout) as e: 
+        print (e)
+        print('***FAILED TO DOWNLOAD***', url)
+        paragraphtext.append("")
+    except: 
+        print ("Other Error")
         print('***FAILED TO DOWNLOAD***', url)
         paragraphtext.append("")
     # print(paragraphtext)

@@ -20,25 +20,29 @@ if __name__ == "__main__":
 
     article_clock_st = time.time()
 
-    filename = "ids_urls_submission_Liberal_from_1241293173_to_1628308799_domainFreqAddedFiltered"
-    ids_urls_dir = ".\..\\" + filename
-    ids_urls_dir_df = pd.read_csv(ids_urls_dir+ '.csv')
+    # filename = "ids_urls_submission_Liberal_from_1241293173_to_1628308799_domainFreqAddedFiltered"
+    filename = "ids_urls_submission_Conservative_from_1202154642_to_1628308799_domainFreqAddedFiltered"
 
-    # # url ="http://www.usatoday.com/news/politics/election2008/2008-09-20-Poll-Obama_N.htm?loc=interstitialskip"
-    # # url_BSoup_text =  get_BSoup_text(url=url)
-    # # print(url_BSoup_text)SS
+    ids_urls_dir = "./../" + filename
+    ids_urls_dir_df = pd.read_csv(ids_urls_dir+ '.csv')
     
-    ids_dir = ".\..\Lib_articles"
+    # ids_dir = "./../Lib_articles"
+    ids_dir = "./../Conserv_articles"
     if isdir(ids_dir) is not True:
         os.makedirs(ids_dir)
 
-    count = 1
-    for ids_urls_list_100 in batch(ids_urls_dir_df.values.tolist()[:430], 100):
+    # count = 238
+    count = 1012
+
+    for ids_urls_list_100 in batch(ids_urls_dir_df.values.tolist()[(count-1)*100:], 100):
+        
         article_clock_st100 = time.time()
 
         ids_urls_texts = get_BSoup_texts_extended(ids_urls_list=ids_urls_list_100)
         ids_urls_text_df = pd.DataFrame(ids_urls_texts, columns = ["ids", "urls", "articles", "created_utc", "author", "num_upvotes", "num_comments", "flair", "url_domain", "Frequency"])
-        ids_urls_text_df.to_csv(ids_dir + "\\" + "Lib_Articles_" + str(count*100)+ '.csv', index=False)
+        
+        # ids_urls_text_df.to_csv(ids_dir + "/" + "Lib_Articles_" + str(count*100)+ '.csv', index=False)
+        ids_urls_text_df.to_csv(ids_dir + "/" + "Conserv_Articles_" + str(count*100)+ '.csv', index=False)
         
         print("---100 article time %s seconds ---" % (time.time() - article_clock_st))
         count+=1
