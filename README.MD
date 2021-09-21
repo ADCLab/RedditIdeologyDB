@@ -141,32 +141,68 @@ print("---url time %s seconds ---" % (url_clock_en - url_clock_st))
 Get articles:
 ---------
 
-Finally, we scrape the articles from the URLs. We use BeautifulSoup4 as it scrapes more articles than newspaper.
+In the ```scrape_articles_main.py```
+
+Finally, we scrape the articles from the URLs. We use BeautifulSoup4 as it scrapes more articles than newspaper. When we send continuous URL requests, our requests may get blocked and also appending/storing all the scrapped articles will lead to execution freeze. So we send each URL request with 1 second delay and we saved every 100 articles in a csv file. If program freezes at any point, abort and run it from the last known URL count (can be found from the last saved csv file).  
 
 ```
 article_clock_st = time.time()
 
-ids_urls_dir = ".\..\ids_urls_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
+# filename = "ids_urls_submission_Liberal_from_1241293173_to_1628308799_domainFreqAddedFiltered"
+filename = "ids_urls_submission_Conservative_from_1202154642_to_1628308799_domainFreqAddedFiltered"
+
+ids_urls_dir = "./../" + filename
 ids_urls_dir_df = pd.read_csv(ids_urls_dir+ '.csv')
 
-# # url ="http://www.usatoday.com/news/politics/election2008/2008-09-20-Poll-Obama_N.htm?loc=interstitialskip"
-# # url_text =  get_newspaper_text(url=url)
-# # print(url_text)
-# # url_BSoup_text =  get_BSoup_text(url=url)
-# # print(url_BSoup_text)
+# ids_dir = "./../Lib_articles"
+ids_dir = "./../Conserv_articles"
+if isdir(ids_dir) is not True:
+    os.makedirs(ids_dir)
 
-print("==== bsoup scrapes more articles than newspaper ====")
+# count = 238 # Init count is 1
+count = 2859 #1012 # Init count is 1
 
-# ids_urls_texts = get_newspaper_texts(ids_urls_list=ids_urls_dir_df.values.tolist())
-ids_urls_texts = get_BSoup_texts(ids_urls_list=ids_urls_dir_df.values.tolist())
-print(len(ids_urls_texts))
+for ids_urls_list_100 in batch(ids_urls_dir_df.values.tolist()[(count-1)*100:], 100):
+    
+    article_clock_st100 = time.time()
 
-ids_urls_text_df = pd.DataFrame(ids_urls_texts, columns = ["ids", "urls", "articles"])
-ids_urls_text_dir = ".\..\ids_urls_articles_bsoup_"+ url_type+ "_"+ subreddit+ "_from_"+ str(firstPostTimestamp)+ "_to_"+ str(lastPostTimestamp)
-ids_urls_text_df.to_csv(ids_urls_text_dir+ '.csv', index=False)
+    ids_urls_texts = get_BSoup_texts_extended(ids_urls_list=ids_urls_list_100)
+    ids_urls_text_df = pd.DataFrame(ids_urls_texts, columns = ["ids", "urls", "articles", "created_utc", "author", "num_upvotes", "num_comments", "flair", "url_domain", "Frequency"])
+    
+    # csv_filename = ids_dir + "/" + "Lib_Articles_" + str(count*100)+ '.csv'
+    csv_filename = ids_dir + "/" + "Conserv_Articles_" + str(count*100)+ '.csv'
+
+    try:
+        ids_urls_text_df.to_csv(csv_filename, index=False)
+    except UnicodeEncodeError:
+        # process data and save it without surrogates...
+        new_ids_urls_text_df = ids_urls_text_df.applymap(lambda x: str(x).encode("utf-8", errors="ignore").decode("utf-8", errors="ignore"))
+        new_ids_urls_text_df.to_csv(csv_filename, index=False)
+
+    print("---100 article time %s seconds ---" % (time.time() - article_clock_st))
+    count+=1
 
 article_clock_en = time.time()
 print("---article time %s seconds ---" % (article_clock_en - article_clock_st))
+```
+
+Once we have all the articles in csv files of 100 URL-batch, we aggregate news articles into a single csv.
+
+```
+    article_clock_st = time.time()
+
+    # ids_dir = "./../Lib_articles"
+    ids_dir = "./../Conserv_articles"
+
+    files = natsorted(glob.glob(ids_dir+"/*.csv"))
+
+    files_df = pd.concat((pd.read_csv(f) for f in files), ignore_index=True)
+
+    # files_df.to_csv("./../" + "Lib_Articles_ALL" + '.csv', index=False)
+    files_df.to_csv("./../" + "Conserv_Articles_ALL" + '.csv', index=False)
+
+    article_clock_en = time.time()
+    print("---article Aggregate time %s seconds ---" % (article_clock_en - article_clock_st))
 ```
 
 Citation
